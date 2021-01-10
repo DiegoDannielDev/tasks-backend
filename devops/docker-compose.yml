@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:9.6
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DB: task
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+  maven:
+    container_name: maven
+    build:
+      context: dockerfiles
+      dockerfile: Dockerfile-maven
+    volumes:
+      - ~/.m2:/root/.m2
+      - $PWD:/usr/src/mymaven
+      - tomcat
+  tomcat:
+    container_name: tomcat
+    build:
+      context: dockerfiles
+      dockerfile: Dockerfile-apache
+    ports:
+      - "8001:8080"
